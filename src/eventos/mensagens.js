@@ -12,7 +12,7 @@ const { HANDLERS } = require('../comandos/index');
 const { removeDeviceSuffix, resolveLidToPhone, resolverNomeDoGrupo, resolverNomeDoPrivado } = require('../contatos');
 const { dbGet, dbPronto, dbRun } = require('../db');
 const { responderEscolha } = require('../escolhas');
-const { verificarFlood } = require('../flood');
+const { avisarBloqueio, verificarFlood } = require('../flood');
 const { SEMPRE_LIBERADOS, avisoDeLimite, permissaoAqui } = require('../permissoes');
 const { printCall, printComandoDesconhecido, printDebug, printError, printInfo } = require('../log');
 const { GetOptFromCommand } = require('../opcoes');
@@ -35,6 +35,9 @@ const TIPOS_DO_SISTEMA = new Set([
     'broadcast_notification', 'call_log', 'e2e_notification', 'gp2',
     'notification', 'notification_template', 'protocol'
 ]);
+
+// A resposta a quem não está no bot.users (um por minuto por pessoa, ver avisarBloqueio)
+const AVISO_DE_BLOQUEIO = '🚫 block. talk to your master.';
 
 client.on('message_create', (msg) => comContextoDebug({
     chatId: idDoCanal(msg?.from, msg?.id?.remote, msg?.to) || msg?.id?.remote || msg?.from || msg?.to,
@@ -283,7 +286,10 @@ client.on('message_create', (msg) => comContextoDebug({
             const admin = Boolean(msg.fromMe ||
                 (senderNumber && getSetting('bot.admins').includes(senderNumber)));
             const permissao = permissaoAqui({ numero: senderNumber, chatId, isGroup });
-            if (!admin && !permissao.liberado) return;
+            if (!admin && !permissao.liberado) {
+                if (avisarBloqueio(senderNumber || senderJid)) await msg.reply(AVISO_DE_BLOQUEIO);
+                return;
+            }
 
             // O começo de mais de um comando (ex.: /un): lista os que a pessoa pode usar
             const possiveis = (resolvido?.possiveis ?? [])
@@ -308,8 +314,8 @@ client.on('message_create', (msg) => comContextoDebug({
          * Os outros usam os comandos comuns se o bot.users deixar: true (todos),
          * a pessoa (pelo telefone), o grupo onde o comando foi digitado ou a
          * pessoa só nesse grupo ("telefone:grupo"), e só os da regra de cada um
-         * (src/permissoes.js). Fora isso, ignorados em silêncio (o bot não é
-         * porteiro mal-educado, só surdo). A exceção: quem só tem permissão em
+         * (src/permissoes.js). Fora isso, o aviso de bloqueio (um por minuto
+         * por pessoa, depois silêncio). A exceção: quem só tem permissão em
          * grupos e tenta no privado fica sabendo onde pode.
          */
         const permissao = permissaoAqui({ numero: senderNumber, chatId, isGroup });
@@ -319,6 +325,8 @@ client.on('message_create', (msg) => comContextoDebug({
                 const grupos = await Promise.all(permissao.soNosGrupos.map(async (id) =>
                     `👥 ${await resolverNomeDoGrupo(id).catch(() => null) || id}`));
                 await msg.reply(`🚫 Sem permissão para comandos no privado. Permitido apenas em: ${grupos.join(', ')}.`);
+            } else if (avisarBloqueio(senderNumber || senderJid)) {
+                await msg.reply(AVISO_DE_BLOQUEIO);
             }
             return;
         }

@@ -9,6 +9,10 @@ const { getSetting } = require('./settings');
 
 const usos = new Map();         // quem → Map(comando → instantes recentes)
 const bloqueados = new Map();   // quem → até quando o bot a ignora
+const avisados = new Map();     // quem (fora do bot.users) → quando levou o último aviso de bloqueio
+
+// Quem não está no bot.users leva o aviso de bloqueio no máximo uma vez por minuto
+const JANELA_DO_AVISO = 60 * 1000;
 
 /**
  * @param {string} quem     o telefone (ou o id) de quem mandou
@@ -42,13 +46,28 @@ function verificarFlood(quem, comando, agora = Date.now()) {
     return { liberado: true };
 }
 
+/**
+ * O aviso de bloqueio (quem não está no bot.users) sai agora? Um por minuto
+ * por pessoa; no resto do tempo, silêncio (não vira flood do próprio bot).
+ * @param {string} quem  o telefone (ou o id) de quem mandou
+ */
+function avisarBloqueio(quem, agora = Date.now()) {
+    if (!quem) return false;
+    const ultimo = avisados.get(quem);
+    if (ultimo && agora - ultimo < JANELA_DO_AVISO) return false;
+    avisados.set(quem, agora);
+    return true;
+}
+
 // Esquece tudo (os testes começam do zero)
 function limparFlood() {
     usos.clear();
     bloqueados.clear();
+    avisados.clear();
 }
 
 module.exports = {
+    avisarBloqueio,
     limparFlood,
     verificarFlood
 };
