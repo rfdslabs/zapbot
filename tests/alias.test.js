@@ -246,16 +246,16 @@ test('/me respeita as permissões dos {/comando} de quem chama', async t => {
 });
 
 test('/alias -q omite o cabeçalho e aceita /me como destino', async () => {
-    const [salvo] = await bot.responder('/alias -q /haha /me Hahaha vc e burro!');
-    assert.match(salvo, /Alias salvo: \/haha/);
+    const [salvo] = await bot.responder('/alias -q /rir /me Hahaha vc e burro!');
+    assert.match(salvo, /Alias salvo: \/rir/);
     assert.deepEqual(await aliases(), [
-        { name: '/haha', description: '', command: '/me Hahaha vc e burro!', quiet: 1 }
+        { name: '/rir', description: '', command: '/me Hahaha vc e burro!', quiet: 1 }
     ]);
-    assert.deepEqual(await bot.responder('/haha'), ['Hahaha vc e burro!']);
+    assert.deepEqual(await bot.responder('/rir'), ['Hahaha vc e burro!']);
 
-    await bot.responder('/alias /haha2 -quiet -d "Riso" /me Kkk');
-    assert.deepEqual((await aliases())[1], { name: '/haha2', description: 'Riso', command: '/me Kkk', quiet: 1 });
-    assert.deepEqual(await bot.responder('/haha2'), ['Kkk']);
+    await bot.responder('/alias /rir2 -quiet -d "Riso" /me Kkk');
+    assert.deepEqual((await aliases())[1], { name: '/rir2', description: 'Riso', command: '/me Kkk', quiet: 1 });
+    assert.deepEqual(await bot.responder('/rir2'), ['Kkk']);
 
     // Sem -q o cabeçalho continua
     await bot.responder('/alias fala /me Oi');

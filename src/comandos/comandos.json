@@ -21,7 +21,7 @@
                         "q"
                     ],
                     "values": [],
-                    "desc": "Ao executar o atalho, não imprime o cabeçalho \"🔗 Alias /nome -> comando\". Ex: /alias -q /haha /me Hahaha!"
+                    "desc": "Ao executar o atalho, não imprime o cabeçalho \"🔗 Alias /nome -> comando\". Ex: /alias -q /rir /me Hahaha!"
                 },
                 {
                     "opts": [
@@ -997,6 +997,16 @@
                 }
             ],
             "onlyAdmin": true
+        },
+        {
+            "cmd": "/haha",
+            "usage": "/haha",
+            "aliases": [
+                "/kkk",
+                "/rs"
+            ],
+            "help": "Risada aleatória em um de quatro estilos (subscrito, arco-íris, kkkk e fontes). Respondendo uma mensagem, a risada vai em cima dela.",
+            "onlyAdmin": false
         },
         {
             "cmd": "/help",

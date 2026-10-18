@@ -90,6 +90,7 @@ nav:
       - /get: comandos/get.md
       - /giphy: comandos/giphy.md
       - /gpt: comandos/gpt.md
+      - /haha: comandos/haha.md
       - /help: comandos/help.md
       - /joke: comandos/joke.md
       - /kernel: comandos/kernel.md

@@ -23,4 +23,4 @@ Envia a mensagem digitada. Cada `{/comando args}` roda na hora e a resposta entr
   que mudam algo. Quem executa precisa de permissão para cada um deles.
 - Uma resposta de várias linhas vira um parágrafo; uma de uma linha só fica na frase. Mídias
   (`/meme`, `/giphy`) saem depois do texto.
-- Combina com o [`/alias`](alias.md): `/alias -q /haha /me Hahaha vc e burro!`.
+- Combina com o [`/alias`](alias.md): `/alias -q /rir /me Hahaha vc e burro!`.

@@ -19,6 +19,7 @@ const { cmdGet } = require('./get');
 const { cmdGiphy } = require('./giphy');
 const { cmdGpt } = require('./gpt');
 const { cmdAlias } = require('./alias');
+const { cmdHaha } = require('./haha');
 const { cmdHelp } = require('./help');
 const { cmdJoke } = require('./joke');
 const { cmdKernel } = require('./kernel');
@@ -64,6 +65,7 @@ const HANDLERS = {
     '/get': cmdGet,
     '/giphy': cmdGiphy,
     '/gpt': cmdGpt,
+    '/haha': cmdHaha,
     '/help': cmdHelp,
     '/joke': cmdJoke,
     '/kernel': cmdKernel,

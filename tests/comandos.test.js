@@ -310,3 +310,25 @@ describe('/set (/config)', () => {
         assert.equal(bot.getSetting('show.max'), 20);
     });
 });
+
+describe('/haha', () => {
+    const FORMATOS = [/^(AHHAhaₕₐₐₕah)+$/u, /^(?:(?:❤️|🧡|💛|💚|💙|💜)HA)+❤️$/u, /^[kK]+$/, /^(?:𝐇𝐀|𝗛𝗔|𝙃𝘼|𝓗𝓐|ＨＡ|ʜᴀ|ᴴᴬ|ₕₐ)+$/u];
+
+    test('os quatro estilos, cada um no seu formato', async () => {
+        const { ESTILOS } = bot.src('comandos/haha');
+        assert.deepEqual(Object.keys(ESTILOS), ['subscrito', 'arcoiris', 'kkk', 'fontes']);
+        Object.values(ESTILOS).forEach((estilo, i) => assert.match(estilo(), FORMATOS[i]));
+    });
+
+    test('responde em cima da mensagem citada; sem ela, do próprio /haha', async (t) => {
+        const citada = bot.criarMensagem({ texto: 'caí da escada', de: OUTRO.jid, id: 'CITADA' });
+        const [r] = await bot.executar('/haha', { citada });
+        assert.match(r.options.quotedMessageId, /CITADA$/);
+        assert.ok(FORMATOS.some(f => f.test(r.texto)), r.texto);
+
+        t.mock.method(Math, 'random', () => 0.99);
+        const [s] = await bot.executar('/kkk', { id: 'PROPRIO' });
+        assert.match(s.options.quotedMessageId, /PROPRIO$/);
+        assert.match(s.texto, FORMATOS[3]);
+    });
+});

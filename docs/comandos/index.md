@@ -130,6 +130,7 @@ mesmo que comecem com `/`. Sem isso, alguém poderia usar um comando que ecoa te
 | [`/get`](get.md) | `/download` | | Baixa vídeo/áudio de redes sociais ou da mídia respondida |
 | [`/giphy`](giphy.md) | `/gif` | | GIF do GIPHY por tag, URL ou ID, enviado em loop |
 | [`/gpt`](gpt.md) | `/ai` | ✅ | Pergunta ao ChatGPT (OpenAI) |
+| [`/haha`](haha.md) | `/kkk`, `/rs` | | Risada aleatória em um de quatro estilos; respondendo, vai em cima da mensagem |
 | [`/help`](help.md) | `/h` | | Menu de ajuda, só com os comandos que quem pediu pode usar |
 | [`/joke`](joke.md) | `/piada`, `/humor` | | Piada aleatória em português |
 | [`/kernel`](kernel.md) | | | Versões atuais do kernel Linux (kernel.org) |

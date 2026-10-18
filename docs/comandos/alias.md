@@ -72,8 +72,8 @@ O bot responde com o aviso abaixo e depois com o resultado de `/cotacao USD`:
 Com `-quiet` (ou `-q`), o cabeçalho não é impresso e só o resultado aparece:
 
 ```text
-/alias -q /haha /me Hahahahahahhahahaha vc e burro!
-/haha  → Hahahahahahhahahaha vc e burro!
+/alias -q /rir /me Hahahahahahhahahaha vc e burro!
+/rir  → Hahahahahahhahahaha vc e burro!
 ```
 
 ## Texto com comandos
