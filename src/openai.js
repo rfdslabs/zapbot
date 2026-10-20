@@ -11,6 +11,16 @@ const OPENAI_MODELOS = [
     'gpt-4.1', 'gpt-4.1-mini', 'gpt-4o', 'gpt-4o-mini'
 ];
 
+/*
+ * Modelos de imagem aceitos pelo /desenhe (endpoint v1/images/generations).
+ * Lista conferida em 20/10/2026 no v1/models.
+ */
+const OPENAI_MODELOS_IMAGEM = [
+    'gpt-image-2.5-sunburst', 'gpt-image-2.5-flare', 'gpt-image-2',
+    'gpt-image-1.5', 'gpt-image-1', 'gpt-image-1-mini'
+];
+
 module.exports = {
-    OPENAI_MODELOS
+    OPENAI_MODELOS,
+    OPENAI_MODELOS_IMAGEM
 };

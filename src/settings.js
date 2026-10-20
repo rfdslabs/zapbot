@@ -2,7 +2,7 @@
  * Settings: configurações gerais na tabela `settings`, alteráveis em tempo de execução pelo /set.
  */
 
-const { OPENAI_MODELOS } = require('./openai');
+const { OPENAI_MODELOS, OPENAI_MODELOS_IMAGEM } = require('./openai');
 const { compilarFiltroDebug } = require('./debugOpcoes');
 const { botConfig } = require('./botConfig');
 const { APP_ENV } = require('./constantes');
@@ -472,6 +472,12 @@ const SETTINGS_SCHEMA = {
         type: 'string',
         opcoes: OPENAI_MODELOS,
         desc: 'Modelo do /gpt, usado quando OPENAI_MODEL não está no config/.env (o /gpt -m lista os aceitos).'
+    },
+    'openai.image.model': {
+        default: 'gpt-image-2',
+        type: 'string',
+        opcoes: OPENAI_MODELOS_IMAGEM,
+        desc: 'Modelo de imagem do /desenhe (o /desenhe -m lista os aceitos).'
     },
     'openai.timeout.ms': {
         default: 60000,

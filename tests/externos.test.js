@@ -204,6 +204,53 @@ describe('/news', () => {
     });
 });
 
+describe('/desenhe (/desenha, /draw, /img)', () => {
+    const imagem = { data: [{ b64_json: Buffer.from('png').toString('base64') }] };
+
+    test('sem chave: desativado; sem pedido, a sintaxe', async () => {
+        assert.match((await bot.responder('/desenhe um gato'))[0], /⚠️ API key da OpenAI não encontrada: o \/desenhe/);
+        await bot.setSetting('openai.api.key', 'sk-teste');
+        assert.match((await bot.responder('/desenhe'))[0], /Uso: \/desenhe/);
+    });
+
+    test('desenha com o modelo do setting; o texto da mensagem respondida entra antes', async () => {
+        await bot.setSetting('openai.api.key', 'sk-teste');
+        rede.responder('post', 'api.openai.com/v1/images/generations', imagem);
+
+        const citada = bot.criarMensagem({ texto: 'um gato', de: bot.OUTRO.jid });
+        const [aviso, r] = await bot.executar('/img em aquarela', { citada });
+        assert.equal(aviso.texto, '🎨 Desenhando, aguarde…');
+        assert.equal(r.content.mimetype, 'image/png');
+        assert.equal(r.options.caption, '🎨 um gato\n\nem aquarela');
+
+        const { cfg } = rede.chamadas.at(-1);
+        assert.equal(cfg.headers.Authorization, 'Bearer sk-teste');
+        assert.equal(cfg.body.model, 'gpt-image-2');
+        assert.equal(cfg.body.prompt, 'um gato\n\nem aquarela');
+        assert.equal(cfg.timeout, 180000, 'no mínimo 3 minutos');
+    });
+
+    test('-m: lista e troca o modelo; fora da lista é recusado', async () => {
+        assert.match((await bot.responder('/desenhe -m'))[0], /🎨 \*Modelo do \/desenhe:\* gpt-image-2\n[\s\S]*✅ gpt-image-2\n/);
+        assert.deepEqual(await bot.responder('/desenhe -m gpt-image-1'), ['✅ Modelo do /desenhe: *gpt-image-1*']);
+        assert.match((await bot.responder('/desenhe -m dall-e-3'))[0], /❌ Modelo não suportado: dall-e-3/);
+        assert.equal(bot.getSetting('openai.image.model'), 'gpt-image-1');
+    });
+
+    test('erro da OpenAI (ex.: pedido recusado) vira mensagem no chat', async () => {
+        await bot.setSetting('openai.api.key', 'sk-teste');
+        rede.responder('post', 'api.openai.com/v1/images/generations', erroHttp(400, 'HTTP 400', { data: { error: { message: 'Pedido recusado pela política' } } }));
+        const r = await bot.responder('/desenhe algo proibido', { erroEsperado: true });
+        assert.deepEqual(r, ['🎨 Desenhando, aguarde…', '❌ Erro no /desenhe: Pedido recusado pela política']);
+    });
+
+    test('só o dono e os admins', async () => {
+        await bot.setSetting('openai.api.key', 'sk-teste');
+        await bot.setSetting('bot.users', true);
+        assert.deepEqual(await bot.responder('/desenhe um gato', { de: bot.OUTRO.jid }), []);
+    });
+});
+
 describe('/gpt (/ai)', () => {
     test('sem chave: desativado', async () => {
         assert.match((await bot.responder('/gpt oi'))[0], /⚠️ API key da OpenAI não encontrada/);

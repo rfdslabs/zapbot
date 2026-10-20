@@ -874,6 +874,35 @@
             }
         },
         {
+            "cmd": "/desenhe",
+            "usage": "/desenhe [pedido]  ou  /desenhe -model [modelo]",
+            "aliases": [
+                "/desenha",
+                "/draw",
+                "/img"
+            ],
+            "help": "Desenha uma imagem com o GPT Image (OpenAI). Respondendo uma mensagem, o texto dela entra no pedido. Precisa de OPENAI_API_KEY no config/.env ou do setting openai.api.key.",
+            "cmd_opts": [
+                {
+                    "opts": [
+                        "model",
+                        "m"
+                    ],
+                    "values": [
+                        "[modelo]"
+                    ],
+                    "desc": "Troca o modelo (setting openai.image.model). Sem modelo, lista o atual e os aceitos."
+                },
+                {
+                    "argv": [
+                        "<pedido>"
+                    ],
+                    "desc": "O que desenhar. Ex: /desenhe um gato astronauta em aquarela"
+                }
+            ],
+            "onlyAdmin": true
+        },
+        {
             "cmd": "/enquete",
             "usage": "/enquete [-m] <pergunta> | <opção 1> | <opção 2> [| ...]  ou  /enquete -r",
             "aliases": [
