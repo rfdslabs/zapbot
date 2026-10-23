@@ -23,6 +23,8 @@ endif
 
 COMPOSE_FILE := docker/docker-compose.yml
 NPM ?= npm
+# Arquivo de cookies (./scripts/get-cookie.sh) que o "make cookies" copia para o container
+FILE ?= cookies.txt
 # Flags extras do node:test, por exemplo: TEST_ARGS=--test-name-pattern=mask
 TEST_ARGS ?=
 NPM_TEST = $(NPM) test
@@ -38,12 +40,14 @@ PROD_SERVICE := zapbot
 ifeq ($(DOCK_REMOTE),1)
 DOCKER_CONTEXT := $(REMOTE_CONTEXT)
 SERVICE := $(PROD_SERVICE)
+COOKIES_DEST := /app/cache/cookies.txt
 VOLUMES := zapbot_app_cache zapbot_wwebjs_auth
 RUN_TEST = $(DOCKER) exec -w /app $(SERVICE) env \
     TEST_ARGS="$(TEST_ARGS)" DEBUG_TESTES="$(DEBUG_TESTES)" $(NPM_TEST)
 else ifeq ($(DOCK_REMOTE),0)
 DOCKER_CONTEXT := $(LOCAL_CONTEXT)
 SERVICE := $(DEV_SERVICE)
+COOKIES_DEST := /workspace/cache/cookies.txt
 VOLUMES := zapbot_app_cache_dev zapbot_wwebjs_auth_dev
 RUN_TEST = TEST_ARGS="$(TEST_ARGS)" $(NPM_TEST)
 else
@@ -64,7 +68,7 @@ DOCS_PATH := $(shell sed -nE 's|^site_url: *https?://[^/]+||p' mkdocs.yml)
 
 .DEFAULT_GOAL := build
 
-.PHONY: help all context build up logs ps shell images volume clean destroy prune \
+.PHONY: help all context build up logs ps shell images volume cookies clean destroy prune \
     deps test test.coverage lint check docs docs.deps docs.build
 
 help: ## Mostra esta ajuda
@@ -136,6 +140,12 @@ images: context ## Lista imagens do destino selecionado
 volume: context ## Cria/inspeciona os volumes do ambiente selecionado
 	$(Q)set -e; for v in $(VOLUMES); do $(DOCKER) volume create $$v >/dev/null; done
 	$(Q)$(DOCKER) volume inspect $(VOLUMES)
+
+cookies: context ## Copia o FILE (cookies.txt, de ./scripts/get-cookie.sh) para o cache do container; o /get passa a usá-lo
+	$(Q)test -f "$(FILE)" || { echo "Arquivo não encontrado: $(FILE) (gere com ./scripts/get-cookie.sh x.com twitter.com)"; exit 1; }
+	$(Q)$(DOCKER) cp "$(FILE)" $(SERVICE):$(COOKIES_DEST)
+	$(Q)$(DOCKER) exec $(SERVICE) chmod 600 $(COOKIES_DEST)
+	@echo "🍪 $(FILE) -> $(SERVICE):$(COOKIES_DEST)"
 
 clean: context ## Remove container e imagem do ambiente selecionado, preservando os volumes
 	-$(Q)$(DOCKER) rm -f $(SERVICE)
