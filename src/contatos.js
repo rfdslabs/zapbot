@@ -7,6 +7,14 @@ const { printDebug, printError } = require('./log');
 const { isDebugMode } = require('./settings');
 const { ehCanal } = require('./util/origem');
 
+/*
+ * O nome de um contato, sempre o MESMO critério: o salvo na SUA agenda (name; shortName é o
+ * apelido dele) vem antes do pushname (o nome que a pessoa escolheu no perfil dela), que só
+ * entra quando ela não está na agenda. verifiedName é o de contas comerciais.
+ */
+const nomeDaAgenda = (c) => c?.name || c?.shortName || null;
+const nomeDoContato = (c) => nomeDaAgenda(c) || c?.pushname || c?.verifiedName || null;
+
 function normalizerPhoneNumber(phoneNumber) {
     return String(phoneNumber ?? '').replace(/\D/g, '');
 }
@@ -220,6 +228,8 @@ async function idsDoChatAtual(chatId) {
 module.exports = {
     idsDoChatAtual,
     isPhoneNumber,
+    nomeDaAgenda,
+    nomeDoContato,
     normalizeWid,
     normalizerPhoneNumber,
     removeDeviceSuffix,

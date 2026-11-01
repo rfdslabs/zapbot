@@ -60,6 +60,7 @@ class ClienteFalso extends EventEmitter {
         this.contatos = new Map();     // jid -> contato
         this.chats = new Map();        // chatId -> chat
         this.lids = new Map();         // "123@lid" -> "5521...@c.us"
+        this.fotos = new Map();        // id -> URL da foto de perfil (sem entrada: sem foto)
         this.inicializado = 0;
         this.destruido = 0;
         this.recusarEdicao = false;    // edit() devolve null, como quando o WhatsApp não deixa editar
@@ -95,6 +96,8 @@ class ClienteFalso extends EventEmitter {
         this.enviadas.push(enviada);
         return enviada;
     }
+
+    async getProfilePicUrl(id) { return this.fotos.get(id); }
 
     async getContactById(id) {
         if (!this.contatos.has(id)) throw new Error(`contato ${id} não encontrado`);

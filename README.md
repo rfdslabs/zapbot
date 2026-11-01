@@ -169,6 +169,7 @@ de um. Os marcados como **Admin** só respondem à sua conta (e aos admins extra
 | [`/noffa`](https://jpereira.github.io/zapbot/comandos/noffa/) | `/🌈`, `/🏳️‍🌈` | | Enfeita o texto com arco-íris |
 | [`/ping`](https://jpereira.github.io/zapbot/comandos/ping/) |  | | Verifica se o bot está vivo |
 | [`/pixelart`](https://jpereira.github.io/zapbot/comandos/pixelart/) | `/ansi`, `/px` | | Arte ANSI/ASCII aleatória (16colo.rs) |
+| [`/profile`](https://jpereira.github.io/zapbot/comandos/profile/) | `/perfil` | ✅ | A foto de perfil de um contato, com o nome da sua agenda e o telefone |
 | [`/search`](https://jpereira.github.io/zapbot/comandos/search/) | `/buscar` | ✅ | Busca no histórico do WhatsApp Web, não só no cache: neste chat ou, no seu privado, em todos (`-N` para mais); `-mask` ofusca telefones |
 | [`/set`](https://jpereira.github.io/zapbot/comandos/set/) | `/config` | ✅ | Lista e altera as configurações (settings); `-a`/`-rem` acrescentam e tiram itens das listas (ex.: o `bot.admins` e o `bot.users`) |
 | [`/show`](https://jpereira.github.io/zapbot/comandos/show/) |  | ✅ | No privado, lista o cache; reexibe apagadas, edições (`-e`), status (`-s`) e reações removidas ou trocadas (`-r`); `-q` busca (texto ou regex) e `-mask` ofusca telefones |
