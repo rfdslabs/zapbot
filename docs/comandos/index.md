@@ -115,6 +115,7 @@ mesmo que comecem com `/`. Sem isso, alguém poderia usar um comando que ecoa te
 | Comando | Aliases | Admin | Descrição |
 |---|---|:-:|---|
 | [`/alias`](alias.md) | | ✅ | Cadastra, lista e remove atalhos para comandos com argumentos ou textos com vários `{/comando}` |
+| [`/ascii`](ascii.md) | | | O texto em letras grandes de ASCII, num bloco que cabe na tela do celular |
 | [`/backup`](backup.md) | `/bkp` | ✅ | Backup diário local e envio por `backup.to`; lista, detalha, restaura e envia o banco |
 | [`/block`](block.md) | `/bloquear` | ✅ | Bloqueia uma ou várias pessoas na sua conta do WhatsApp (respondendo uma mensagem, quem a escreveu); sem nada, lista os bloqueados; `-mask` ofusca telefones |
 | [`/boletos`](boletos.md) | | | Sorteia 2 membros para "pagar um boleto" |

@@ -20,6 +20,7 @@ const { cmdGet } = require('./get');
 const { cmdGiphy } = require('./giphy');
 const { cmdGpt } = require('./gpt');
 const { cmdAlias } = require('./alias');
+const { cmdAscii } = require('./ascii');
 const { cmdHaha } = require('./haha');
 const { cmdHelp } = require('./help');
 const { cmdJoke } = require('./joke');
@@ -51,6 +52,7 @@ const { printError } = require('../log');
 // cmd do comandos.json -> handler
 const HANDLERS = {
     '/alias': cmdAlias,
+    '/ascii': cmdAscii,
     '/backup': cmdBackup,
     '/block': cmdBlock,
     '/boletos': cmdBoletos,
