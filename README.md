@@ -29,6 +29,8 @@ comandos começam com `/`.
   de visto por último observados e alertas online: [`/monitor`](docs/comandos/monitor.md)
 - Baixa vídeos com yt-dlp e ffmpeg: [`/get`](docs/comandos/get.md)
 - Cria figurinhas: [`/sticker`](docs/comandos/sticker.md)
+- Mostra a foto de perfil de um contato ou grupo: [`/profile`](docs/comandos/profile.md)
+- Escreve texto em letras grandes de ASCII: [`/ascii`](docs/comandos/ascii.md)
 - Vigia mensagens por texto ou regex: [`/watch`](docs/comandos/watch.md)
 - Agenda mensagens: [`/cron`](docs/comandos/cron.md)
 - Mostra cotações e alertas de preço: [`/cotacao`](docs/comandos/cotacao.md),
@@ -148,15 +150,15 @@ de um. Os marcados como **Admin** só respondem à sua conta (e aos admins extra
 | [`/cotacao`](https://jpereira.github.io/zapbot/comandos/cotacao/) | `/cambio` | | Cotação de EUR e USDT (e USD, GBP) contra o real: atual, abertura, fechamento e variação; alertas de preço |
 | [`/cron`](https://jpereira.github.io/zapbot/comandos/cron/) | `/agenda`, `/lembrete` | ✅ | Na hora marcada (`30m`, `às 18h`, `sexta 9h`...): envia uma mensagem (aqui ou com `-to`, em um ou vários chats) ou, como `/lembrete`, um ⏰ lembrete; pode repetir, editar e pausar, e rodar comandos no texto (`{/crypto}`) |
 | [`/crypto`](https://jpereira.github.io/zapbot/comandos/crypto/) | `/bitcoio`, `/creptomoeda` | | Cotação das criptos ativadas (padrão: BTC, ETH, SOL e HYPE) ou só das pedidas (`BTC ETH`); alertas de preço |
-| [`/cve`](https://jpereira.github.io/zapbot/comandos/cve/) | | | Últimas CVEs publicadas (NVD); `-highscore` só as críticas |
+| [`/cve`](https://jpereira.github.io/zapbot/comandos/cve/) | | | Últimas CVEs publicadas (NVD), uma CVE pelo id ou busca por texto; `-highscore` só as críticas |
 | [`/debug`](https://jpereira.github.io/zapbot/comandos/debug/) | `/d`, `/dbg` | ✅ | Logs de debug com níveis, filtro e cópia para chats |
 | [`/defi`](https://jpereira.github.io/zapbot/comandos/defi/) | | ✅ | Posições de liquidez da Orca e do Project X: saldo, faixa, preço e taxas a coletar, lidos on-chain; `-alerta` avisa quando sai e volta para a faixa e quando as taxas passam de um valor. `liquidswap`: posições de LP na Aptos. `morpho` e `aave`: posição, empréstimos e risco no Morpho e no Aave V3 |
-| [`/desenhe`](https://jpereira.github.io/zapbot/comandos/desenhe/) | `/desenha`, `/draw`, `/img` | ✅ | Desenha uma imagem com o GPT Image (OpenAI) |
+| [`/desenhe`](docs/comandos/desenhe.md) | `/desenha`, `/draw`, `/img` | ✅ | Desenha uma imagem com o GPT Image (OpenAI) |
 | [`/enquete`](https://jpereira.github.io/zapbot/comandos/enquete/) | `/quiz` | ✅ | Cria uma enquete nativa do WhatsApp no chat; `-r` mostra o resultado |
 | [`/get`](https://jpereira.github.io/zapbot/comandos/get/) | `/download` | | Baixa vídeo/áudio de redes sociais ou da mídia respondida |
 | [`/giphy`](https://jpereira.github.io/zapbot/comandos/giphy/) | `/gif` | | GIF do GIPHY por tag, URL ou ID, enviado em loop |
 | [`/gpt`](https://jpereira.github.io/zapbot/comandos/gpt/) | `/ai` | ✅ | Pergunta ao ChatGPT (OpenAI) |
-| [`/haha`](https://jpereira.github.io/zapbot/comandos/haha/) | `/kkk`, `/rs` | | Risada aleatória em um de quatro estilos; respondendo, vai em cima da mensagem |
+| [`/haha`](docs/comandos/haha.md) | `/kkk`, `/rs` | | Risada aleatória em um de quatro estilos; respondendo, vai em cima da mensagem |
 | [`/help`](https://jpereira.github.io/zapbot/comandos/help/) | `/h` | | Menu de ajuda, só com os comandos que quem pediu pode usar |
 | [`/joke`](https://jpereira.github.io/zapbot/comandos/joke/) | `/piada`, `/humor` | | Piada aleatória em português |
 | [`/kernel`](https://jpereira.github.io/zapbot/comandos/kernel/) | | | Versões atuais do kernel Linux (kernel.org) |
