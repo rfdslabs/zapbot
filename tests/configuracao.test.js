@@ -182,7 +182,7 @@ describe('documentação', () => {
 
     test('tabela Resumo do site e do README: todos os comandos, em ordem, iguais ao config', () => {
         conferirResumo(lerDoc('comandos/index.md'), '## Resumo', 'docs/comandos/index.md', { comLinks: true });
-        conferirResumo(README, '## Comandos', 'README.md', { comLinks: false });
+        conferirResumo(README, '## Commands', 'README.md', { comLinks: false });
     });
 
     test('menu do mkdocs.yml: todas as páginas, comandos em ordem alfabética', () => {
@@ -223,7 +223,7 @@ describe('documentação', () => {
         assert.ok(total > 50, `poucos links conferidos (${total})`);
     });
 
-    test('instalação e README: a versão estável é uma release com data, até a do package.json (a seguinte só no bump.sh)', () => {
+    test('instalação: a versão estável é uma release com data, até a do package.json (a seguinte só no bump.sh)', () => {
         const { version } = require('../package.json');
         const numeros = (v) => v.split('.').map(Number);
         const [x, y, z] = numeros(version);
@@ -233,8 +233,7 @@ describe('documentação', () => {
         const [ex, ey, ez] = numeros(m[1]);
         assert.ok(ex < x || (ex === x && (ey < y || (ey === y && ez <= z))), `a estável (${m[1]}) passa da versão do package.json (${version})`);
 
-        assert.match(README, new RegExp(`hoje a \`v${m[1].replaceAll('.', '\\.')}\``));
-        assert.match(README, new RegExp(`git checkout v${m[1].replaceAll('.', '\\.')}\n`));
+        // O README deste fork (em inglês) instala pelo main do fork, sem fixar uma release
     });
 
     test('nenhum título repetido na mesma página (a âncora ficaria ambígua), no docs/ e no README', () => {
@@ -264,7 +263,8 @@ describe('documentação', () => {
                 if (anc) assert.ok(ancorasDe(lerDoc(md)).has(decodeURIComponent(anc)), `${arquivo}: âncora não existe: ${url}`);
             }
         }
-        assert.ok(total > 40, `poucos links para o site (${total})`);
+        // O README deste fork aponta para o docs/, não para o site: sobram os links do docs/ e do comandos.json
+        assert.ok(total > 0, `nenhum link para o site (${total})`);
     });
 });
 
