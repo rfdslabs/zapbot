@@ -62,6 +62,7 @@ e sobrevivem a reinícios. Para ver e alterar, use o [`/set`](comandos/set.md).
 | `news.max` | 1–10 | `5` | Manchetes exibidas pelo `/news` (o `/news <quantidade>` sobrepõe) |
 | `openai.api.key` | texto (pode ser vazio) | *(vazio)* | Chave da OpenAI, usada quando `OPENAI_API_KEY` não está no `config/.env`. Exibida mascarada (`••••1234`); `/set -reset openai.api.key` apaga |
 | `openai.api.model` | texto (da lista) | `gpt-4o-mini` | Modelo do `/gpt`, usado quando `OPENAI_MODEL` não está no `config/.env`. Aceitos: os listados por `/gpt -m` |
+| `openai.image.gifModel` | texto (da lista) | `gpt-image-2.6-flare` | Modelo do `/desenhe -gif` (GIF animado). Aceitos: os listados por `/desenhe -gif -m` |
 | `openai.image.model` | texto (da lista) | `gpt-image-2` | Modelo de imagem do `/desenhe`. Aceitos: os listados por `/desenhe -m` |
 | `openai.timeout.ms` | 5000–300000 | `60000` | Timeout do `/gpt`, usado quando `OPENAI_TIMEOUT_MS` não está no `config/.env` |
 | `pixelart.maxParts` | 1–10 | `3` | Máximo de partes do [`/pixelart`](comandos/pixelart.md) quando a arte é mais alta que 4096 px |

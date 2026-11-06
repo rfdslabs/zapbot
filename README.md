@@ -28,7 +28,7 @@ start with `/`.
 - Makes stickers: [`/sticker`](docs/comandos/sticker.md)
 - Shows the profile picture of a contact or group: [`/profile`](docs/comandos/profile.md)
 - Writes text in big ASCII letters: [`/ascii`](docs/comandos/ascii.md)
-- Draws images with GPT Image: [`/desenhe`](docs/comandos/desenhe.md)
+- Draws images and animated GIFs with GPT Image: [`/desenhe`](docs/comandos/desenhe.md)
 - Watches messages by text or regex: [`/watch`](docs/comandos/watch.md)
 - Schedules messages: [`/cron`](docs/comandos/cron.md)
 - Shows exchange rates and price alerts: [`/cotacao`](docs/comandos/cotacao.md),
@@ -142,7 +142,7 @@ level.
 | [`/cve`](docs/comandos/cve.md) | | | Latest published CVEs (NVD), one CVE by id or a text search; `-highscore` only the critical ones |
 | [`/debug`](docs/comandos/debug.md) | `/d`, `/dbg` | ✅ | Debug logs with levels, filters and copies to chats |
 | [`/defi`](docs/comandos/defi.md) | | ✅ | Orca and Project X liquidity positions: balance, range, price and uncollected fees, read on-chain; `-alerta` warns when a position leaves and re-enters its range and when fees pass a value. `liquidswap`: LP positions on Aptos. `morpho` and `aave`: position, loans and risk on Morpho and Aave V3 |
-| [`/desenhe`](docs/comandos/desenhe.md) | `/desenha`, `/draw`, `/img` | ✅ | Draws an image with GPT Image (OpenAI) |
+| [`/desenhe`](docs/comandos/desenhe.md) | `/desenha`, `/draw`, `/img` | ✅ | Draws an image with GPT Image (OpenAI); `-gif` makes an animated GIF, also from a photo |
 | [`/enquete`](docs/comandos/enquete.md) | `/quiz` | ✅ | Creates a native WhatsApp poll in the chat; `-r` shows the result |
 | [`/get`](docs/comandos/get.md) | `/download` | | Downloads video/audio from social networks or the replied media |
 | [`/giphy`](docs/comandos/giphy.md) | `/gif` | | A GIPHY GIF by tag, URL or ID, sent looping |

@@ -127,7 +127,7 @@ mesmo que comecem com `/`. Sem isso, alguém poderia usar um comando que ecoa te
 | [`/cve`](cve.md) | | | Últimas CVEs publicadas (NVD); `-highscore` só as críticas |
 | [`/debug`](debug.md) | `/d`, `/dbg` | ✅ | Logs de debug com níveis, filtro e cópia para chats |
 | [`/defi`](defi.md) | | ✅ | Posições de liquidez da Orca e do Project X: saldo, faixa, preço e taxas a coletar, lidos on-chain; `-alerta` avisa quando sai e volta para a faixa e quando as taxas passam de um valor. `liquidswap`: posições de LP na Aptos. `morpho` e `aave`: posição, empréstimos e risco no Morpho e no Aave V3 |
-| [`/desenhe`](desenhe.md) | `/desenha`, `/draw`, `/img` | ✅ | Desenha uma imagem com o GPT Image (OpenAI) |
+| [`/desenhe`](desenhe.md) | `/desenha`, `/draw`, `/img` | ✅ | Desenha uma imagem com o GPT Image (OpenAI); `-gif` faz um GIF animado, também a partir de uma foto |
 | [`/enquete`](enquete.md) | `/quiz` | ✅ | Cria uma enquete nativa do WhatsApp no chat; `-r` mostra o resultado |
 | [`/get`](get.md) | `/download` | | Baixa vídeo/áudio de redes sociais ou da mídia respondida |
 | [`/giphy`](giphy.md) | `/gif` | | GIF do GIPHY por tag, URL ou ID, enviado em loop |

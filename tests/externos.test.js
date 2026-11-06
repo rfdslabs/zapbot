@@ -284,6 +284,92 @@ describe('/desenhe (/desenha, /draw, /img)', () => {
         await bot.setSetting('bot.users', true);
         assert.deepEqual(await bot.responder('/desenhe um gato', { de: bot.OUTRO.jid }), []);
     });
+
+    describe('-gif', () => {
+        const gif = { data: [{ b64_json: Buffer.from('GIF89a').toString('base64') }] };
+
+        test('pede o GIF ao modelo 2.6 e manda como MP4 em loop (sendVideoAsGif)', async () => {
+            await bot.setSetting('openai.api.key', 'sk-teste');
+            rede.responder('post', 'api.openai.com/v1/images/generations', gif);
+
+            const [aviso, r] = await bot.executar('/img -gif um gato dançando');
+            assert.equal(aviso.texto, '🎞️ Animando (9 quadros), aguarde…');
+            assert.equal(r.content.mimetype, 'video/mp4');
+            assert.equal(r.options.sendVideoAsGif, true);
+            assert.equal(r.options.caption, '🎞️ um gato dançando');
+
+            const { cfg } = rede.chamadas.at(-1);
+            assert.deepEqual(
+                { ...cfg.body },
+                { model: 'gpt-image-2.6-flare', prompt: 'um gato dançando', n: 1, size: '512x512', output_format: 'gif', frame_count: 9, frame_duration_ms: 200 }
+            );
+            assert.equal(cfg.timeout, 300000, 'no mínimo 5 minutos');
+
+            // O GIF passa pelo ffmpeg: entrada .gif, saída .mp4 em H.264
+            const ffmpeg = bot.processos.chamadas.at(-1);
+            assert.match(ffmpeg.args[ffmpeg.args.indexOf('-i') + 1], /desenho\.gif$/);
+            assert.ok(ffmpeg.args.includes('libx264'));
+            assert.match(ffmpeg.args.at(-1), /desenho\.mp4$/);
+        });
+
+        test('-frames e -ms ajustam a animação e valem como -gif; fora do intervalo é recusado', async () => {
+            await bot.setSetting('openai.api.key', 'sk-teste');
+            rede.responder('post', 'api.openai.com/v1/images/generations', gif);
+
+            const [aviso] = await bot.executar('/desenhe -f 4 -ms 500 uma bandeira ao vento');
+            assert.equal(aviso.texto, '🎞️ Animando (4 quadros), aguarde…');
+            const { body } = rede.chamadas.at(-1).cfg;
+            assert.equal(body.frame_count, 4);
+            assert.equal(body.frame_duration_ms, 500);
+            assert.equal(body.prompt, 'uma bandeira ao vento');
+
+            const chamadas = rede.chamadas.length;
+            assert.deepEqual(await bot.responder('/desenhe -gif -f 17 x'), ['❌ -frames precisa ser um inteiro de 2 a 16.']);
+            assert.deepEqual(await bot.responder('/desenhe -gif -ms 10 x'), ['❌ -ms precisa ser um inteiro de 20 a 2000.']);
+            assert.equal(rede.chamadas.length, chamadas, 'nada foi pedido à OpenAI');
+        });
+
+        test('respondendo uma foto: anima a foto pelo endpoint de edição (multipart)', async () => {
+            await bot.setSetting('openai.api.key', 'sk-teste');
+            rede.responder('post', 'api.openai.com/v1/images/edits', gif);
+
+            const citada = bot.criarMensagem({ tipo: 'image', texto: 'meu cachorro', de: bot.OUTRO.jid,
+                midia: { mimetype: 'image/jpeg', data: Buffer.from('jpeg').toString('base64') } });
+            const [aviso, r] = await bot.executar('/img -gif balançando o rabo', { citada });
+            assert.equal(aviso.texto, '🎞️ Animando a foto (9 quadros), aguarde…');
+            assert.equal(r.options.sendVideoAsGif, true);
+
+            const { url, cfg } = rede.chamadas.at(-1);
+            assert.match(url, /\/v1\/images\/edits$/);
+            assert.ok(cfg.body instanceof FormData);
+            assert.equal(cfg.body.get('model'), 'gpt-image-2.6-flare');
+            assert.equal(cfg.body.get('output_format'), 'gif');
+            assert.equal(cfg.body.get('prompt'), 'meu cachorro\n\nbalançando o rabo');
+            const foto = cfg.body.get('image');
+            assert.equal(foto.type, 'image/jpeg');
+            assert.equal(foto.name, 'foto.jpeg');
+            assert.equal(Buffer.from(await foto.arrayBuffer()).toString(), 'jpeg');
+        });
+
+        test('ffmpeg falhou: o GIF ainda chega, como documento', async () => {
+            await bot.setSetting('openai.api.key', 'sk-teste');
+            rede.responder('post', 'api.openai.com/v1/images/generations', gif);
+            bot.processos.falhar = 'ffmpeg';
+
+            const [, r] = await bot.executar('/desenhe -gif um gato', { erroEsperado: true });
+            assert.equal(r.content.mimetype, 'image/gif');
+            assert.equal(r.options.sendMediaAsDocument, true);
+            assert.ok(bot.logs.some(l => l.includes('/desenhe -gif: ffmpeg falhou')));
+        });
+
+        test('-gif -m: lista e troca o modelo do GIF (só os 2.6), sem mexer no da imagem', async () => {
+            assert.match((await bot.responder('/desenhe -gif -m'))[0], /🎨 \*Modelo do \/desenhe -gif:\* gpt-image-2\.6-flare\n[\s\S]*▫️ gpt-image-2\.6-sunburst/);
+            assert.deepEqual(await bot.responder('/desenhe -gif -m gpt-image-2.6-sunburst'), ['✅ Modelo do /desenhe -gif: *gpt-image-2.6-sunburst*']);
+            assert.match((await bot.responder('/desenhe -gif -m gpt-image-2'))[0], /❌ Modelo não suportado: gpt-image-2/);
+            assert.equal(bot.getSetting('openai.image.gifModel'), 'gpt-image-2.6-sunburst');
+            assert.equal(bot.getSetting('openai.image.model'), 'gpt-image-2');
+        });
+    });
 });
 
 describe('/gpt (/ai)', () => {

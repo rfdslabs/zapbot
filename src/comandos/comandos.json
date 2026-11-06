@@ -907,14 +907,41 @@
         },
         {
             "cmd": "/desenhe",
-            "usage": "/desenhe [pedido]  ou  /desenhe -model [modelo]",
+            "usage": "/desenhe [pedido]  ou  /desenhe -gif [-frames N] [-ms N] [pedido]  ou  /desenhe [-gif] -model [modelo]",
             "aliases": [
                 "/desenha",
                 "/draw",
                 "/img"
             ],
-            "help": "Desenha uma imagem com o GPT Image (OpenAI). Respondendo uma mensagem, o texto dela entra no pedido. Precisa de OPENAI_API_KEY no config/.env ou do setting openai.api.key.",
+            "help": "Desenha uma imagem com o GPT Image (OpenAI); com -gif, um GIF animado (GPT Image 2.6), e numa foto (legenda ou resposta) anima a foto. Respondendo uma mensagem, o texto dela entra no pedido. Precisa de OPENAI_API_KEY no config/.env ou do setting openai.api.key.",
             "cmd_opts": [
+                {
+                    "opts": [
+                        "gif",
+                        "g"
+                    ],
+                    "values": [],
+                    "desc": "GIF animado (setting openai.image.gifModel). Numa foto, ou respondendo uma, anima a foto. Ex: /img -gif um gato dançando"
+                },
+                {
+                    "opts": [
+                        "frames",
+                        "f"
+                    ],
+                    "values": [
+                        "<n>"
+                    ],
+                    "desc": "Quadros do GIF, de 2 a 16 (padrão 9). Vale como -gif"
+                },
+                {
+                    "opts": [
+                        "ms"
+                    ],
+                    "values": [
+                        "<ms>"
+                    ],
+                    "desc": "Duração de cada quadro do GIF, de 20 a 2000 ms (padrão 200). Vale como -gif"
+                },
                 {
                     "opts": [
                         "model",
@@ -923,7 +950,7 @@
                     "values": [
                         "[modelo]"
                     ],
-                    "desc": "Troca o modelo (setting openai.image.model). Sem modelo, lista o atual e os aceitos."
+                    "desc": "Troca o modelo (setting openai.image.model; com -gif, openai.image.gifModel). Sem modelo, lista o atual e os aceitos."
                 },
                 {
                     "argv": [
